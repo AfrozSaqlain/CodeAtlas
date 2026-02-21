@@ -6,7 +6,7 @@
 
 ## 📌 About
 
-DevNexus is a structured learning repository designed to help developers build strong foundations in:
+CodeAtlas is a structured learning repository designed to help developers build strong foundations in:
 
 - 🐍 Python Programming
 - 🐧 Linux & Shell Scripting
@@ -18,21 +18,21 @@ Whether you're a beginner or looking to sharpen your skills, this repo provides 
 ---
 
 ## 📂 Repository Structure
-│
+CodeAtlas/
 ├── python/
-│ ├── basics/
-│ ├── advanced/
-│ └── projects/
+│   ├── basics/
+│   ├── advanced/
+│   └── projects/
 │
 ├── linux/
-│ ├── shell_scripting/
-│ ├── system_tools/
-│ └── networking/
+│   ├── shell_scripting/
+│   ├── system_tools/
+│   └── networking/
 │
 ├── ai/
-│ ├── fundamentals/
-│ ├── deep_learning/
-│ └── projects/
+│   ├── fundamentals/
+│   ├── deep_learning/
+│   └── projects/
 │
 └── resources/
 
