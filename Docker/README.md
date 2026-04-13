@@ -4,193 +4,221 @@
 ![Linux](https://img.shields.io/badge/Platform-Linux-black?logo=linux)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A minimal, practical, and clean guide to working with Docker containers and images.  
+A minimal, practical, and clean guide to working with Docker containers
+and images.\
 Perfect for beginners and daily use.
 
----
+------------------------------------------------------------------------
 
 ## 🚀 Service Management
 
 ### Enable Docker at boot
-```bash
+
+``` bash
 sudo systemctl enable docker
 ```
 
 ### Disable Docker at boot
-```bash
+
+``` bash
 sudo systemctl disable docker
 ```
 
 ### Start Docker
-```bash
+
+``` bash
 sudo systemctl start docker
 ```
 
 ### Stop Docker
-```bash
+
+``` bash
 sudo systemctl stop docker
 ```
 
 ### Check status
-```bash
+
+``` bash
 systemctl status docker
 ```
 
----
+------------------------------------------------------------------------
 
 ## 📦 Containers
 
 ### List running containers
-```bash
+
+``` bash
 docker ps
 ```
 
 ### List all containers (including stopped)
-```bash
+
+``` bash
 docker ps -a
 ```
 
 ### Run a container (interactive shell)
-```bash
+
+``` bash
 docker run -it ubuntu bash
 ```
 
 ### Run and auto-remove container (clean usage)
-```bash
+
+``` bash
 docker run --rm hello-world
 ```
 
 ### Start an existing container
-```bash
+
+``` bash
 docker start -i <container_id>
 ```
 
 ### View container logs
-```bash
+
+``` bash
 docker logs <container_id>
 ```
 
 ### Inspect container (detailed info)
-```bash
+
+``` bash
 docker inspect <container_id>
 ```
 
----
+------------------------------------------------------------------------
 
 ## 🖼️ Images
 
 ### List images
-```bash
+
+``` bash
 docker image ls
 ```
 
 ### Pull image
-```bash
+
+``` bash
 docker pull ubuntu
 ```
 
 ### Remove image
-```bash
+
+``` bash
 docker rmi <image_id>
 ```
 
----
+------------------------------------------------------------------------
 
 ## 💾 Persistence (Important)
 
 ### Use volumes (recommended for real work)
-```bash
+
+``` bash
 docker run -it -v ~/mydata:/home/ubuntu ubuntu bash
 ```
 
-- `~/mydata` → Host directory  
-- `/home/ubuntu` → Container directory  
-
 ✔️ Files persist even after container exits
 
----
+------------------------------------------------------------------------
 
 ## 🧹 Cleanup
 
 ### Remove stopped containers
-```bash
+
+``` bash
 docker container prune
 ```
 
 ### Remove unused images
-```bash
+
+``` bash
 docker image prune
 ```
 
-### Remove everything unused (⚠️ aggressive)
-```bash
+### Remove everything unused
+
+``` bash
 docker system prune
 ```
 
----
+------------------------------------------------------------------------
 
-## ⚡ Useful Tips
+## 🐍 Dockerizing a Python CLI Application
 
-- Containers are **ephemeral** (temporary by default)
-- Use `--rm` to avoid clutter
-- Use volumes for **persistent data**
-- Each `docker run` creates a **new container**
+### Project Structure
 
----
-
-## 🧠 Mental Model
-
-| Concept   | Meaning             |
-|-----------|---------------------|
-| Image     | Blueprint/template  |
-| Container | Running instance    |
-| Volume    | Persistent storage  |
-
----
-
-## 🧪 Test Installation
-
-```bash
-docker run hello-world
+``` bash
+project-root/
+├── pyproject.toml
+├── Dockerfile
+└── src/
+    └── my_package/
+        ├── __init__.py
+        └── cli.py
 ```
 
----
+### Key Points
 
-## 📌 Optional: Run Docker without sudo
+-   Use `src/` layout
+-   Define CLI entry point in `pyproject.toml`
+-   Add dependencies
+-   Avoid GUI (use headless mode)
 
-```bash
-sudo usermod -aG docker $USER
+### Dockerfile
+
+``` dockerfile
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update && apt-get install -y \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/app
+
+COPY pyproject.toml .
+COPY src/ ./src/
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir .
+
+CMD ["bash", "-lc", "cd ~ && exec bash"]
 ```
 
-Then log out and log back in.
+### Build
 
----
-
-## 🚀 Example Workflow
-
-```bash
-# Pull image
-docker pull ubuntu
-
-# Run interactive container
-docker run -it ubuntu bash
-
-# Exit container
-exit
-
-# Restart same container
-docker ps -a
-docker start -i <container_id>
+``` bash
+docker build -t my-cli-app .
 ```
 
----
+### Run
+
+``` bash
+docker run -it --rm my-cli-app
+```
+
+### Tag
+
+``` bash
+docker tag my-cli-app <your-username>/my-cli-app:latest
+```
+
+### Push
+
+``` bash
+docker push <your-username>/my-cli-app:latest
+```
+
+------------------------------------------------------------------------
 
 ## 🏁 You're Ready!
-
-You now know how to:
-- Run and manage containers
-- Handle images efficiently
-- Persist data properly
-- Keep your system clean
 
 Happy Dockering 🚀
