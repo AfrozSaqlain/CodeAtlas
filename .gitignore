@@ -9,8 +9,8 @@
 # Uncomment if you don't want to track compiled binaries.
 # C_Lang/hello
 # C_Lang/add_num
-# *.o
-# *.out
+*.o
+*.out
 
 # ==========================
 # Python
