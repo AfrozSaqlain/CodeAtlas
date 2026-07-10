@@ -1,0 +1,60 @@
+# ==========================
+# Build artifacts
+# ==========================
+
+# Rust
+**/target/
+
+# C/C++ compiled executables (optional)
+# Uncomment if you don't want to track compiled binaries.
+# C_Lang/hello
+# C_Lang/add_num
+# *.o
+# *.out
+
+# ==========================
+# Python
+# ==========================
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+.venv/
+venv/
+env/
+
+.ipynb_checkpoints/
+
+# ==========================
+# Editor / IDE
+# ==========================
+
+.vscode/
+.idea/
+
+*.swp
+*.swo
+*~
+
+# ==========================
+# Operating System
+# ==========================
+
+.DS_Store
+Thumbs.db
+
+# ==========================
+# Environment variables
+# ==========================
+
+.env
+.env.*
+
+# ==========================
+# Logs
+# ==========================
+
+*.log
