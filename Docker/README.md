@@ -4,19 +4,21 @@
 ![Linux](https://img.shields.io/badge/Platform-Linux-black?logo=linux)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A minimal and practical Docker cheat sheet for building, running, and managing containers.
+A concise yet practical guide to Docker for everyday development. This covers the most common workflows: managing Docker, building images, running containers, cleaning up resources, and packaging Python applications.
 
 ---
 
-# 🚀 Docker Service
+# 🚀 Managing the Docker Service
 
-### Enable Docker on boot
+Docker runs as a background service (daemon). These commands control the service itself.
+
+### Enable Docker at system startup
 
 ```bash
 sudo systemctl enable docker
 ```
 
-### Disable Docker on boot
+### Disable Docker from starting automatically
 
 ```bash
 sudo systemctl disable docker
@@ -42,27 +44,29 @@ systemctl status docker
 
 ---
 
-# 📦 Containers
+# 📦 Working with Containers
 
-### Running containers
+A **container** is a running (or previously run) instance of an image.
+
+### List running containers
 
 ```bash
 docker ps
 ```
 
-### All containers
+### List all containers (including stopped ones)
 
 ```bash
 docker ps -a
 ```
 
-### Run interactively
+### Run a container interactively
 
 ```bash
 docker run -it ubuntu bash
 ```
 
-### Run and remove after exit
+### Run a container and automatically remove it after exit
 
 ```bash
 docker run --rm hello-world
@@ -74,19 +78,19 @@ docker run --rm hello-world
 docker start -ai <container>
 ```
 
-### View logs
+### View container logs
 
 ```bash
 docker logs <container>
 ```
 
-### Inspect container
+### Inspect container details
 
 ```bash
 docker inspect <container>
 ```
 
-### Remove a container
+### Remove a stopped container
 
 ```bash
 docker rm <container>
@@ -94,15 +98,17 @@ docker rm <container>
 
 ---
 
-# 🖼️ Images
+# 🖼️ Working with Images
 
-### List images
+An **image** is a blueprint used to create containers.
+
+### List downloaded images
 
 ```bash
 docker image ls
 ```
 
-### Pull an image
+### Download an image
 
 ```bash
 docker pull ubuntu
@@ -114,7 +120,9 @@ docker pull ubuntu
 docker rmi <image>
 ```
 
-### Inspect image history
+### View image layers
+
+Useful for understanding image size and debugging Dockerfiles.
 
 ```bash
 docker history <image>
@@ -122,9 +130,9 @@ docker history <image>
 
 ---
 
-# 💾 Volumes
+# 💾 Persisting Data with Volumes
 
-Persist data outside the container.
+Containers are temporary. If you want your files to remain after the container is deleted, mount a directory from your host machine.
 
 ```bash
 docker run -it \
@@ -132,47 +140,13 @@ docker run -it \
     ubuntu bash
 ```
 
-Files inside `~/mydata` remain even after the container is removed.
+Anything written to `/workspace` inside the container is stored in `~/mydata` on your computer.
 
 ---
 
-# 🧹 Cleanup
+# ⚡ Building Images with Buildx (Recommended)
 
-### Remove stopped containers
-
-```bash
-docker container prune
-```
-
-### Remove dangling images
-
-```bash
-docker image prune
-```
-
-### Remove all unused images
-
-```bash
-docker image prune -a
-```
-
-### Remove everything unused
-
-```bash
-docker system prune
-```
-
-### Check Docker disk usage
-
-```bash
-docker system df
-```
-
----
-
-# ⚡ Buildx (Recommended)
-
-Docker recommends using **Buildx** (BuildKit) instead of the legacy builder.
+Docker now recommends **Buildx (BuildKit)** instead of the legacy `docker build` command.
 
 ### Build an image
 
@@ -182,9 +156,9 @@ docker buildx build \
     -t my-image:latest .
 ```
 
-`--load` imports the image into your local Docker image store.
+The `--load` flag imports the built image into your local Docker image store so it behaves just like images built with the legacy builder.
 
-### List builders
+### Show available builders
 
 ```bash
 docker buildx ls
@@ -204,9 +178,45 @@ docker buildx prune -a
 
 ---
 
-# 🐍 Dockerizing a Python CLI
+# 🧹 Cleaning Up Docker Resources
 
-## Project Structure
+Docker stores images, stopped containers, caches, and volumes. These commands help reclaim disk space.
+
+### Remove all stopped containers
+
+```bash
+docker container prune
+```
+
+### Remove dangling (unused) images
+
+```bash
+docker image prune
+```
+
+### Remove all unused images
+
+```bash
+docker image prune -a
+```
+
+### Remove all unused Docker resources
+
+```bash
+docker system prune
+```
+
+### Check Docker disk usage
+
+```bash
+docker system df
+```
+
+---
+
+# 🐍 Dockerizing a Python CLI Application
+
+A common project layout for Python applications.
 
 ```text
 project/
@@ -245,19 +255,22 @@ CMD ["bash", "-lc", "cd ~ && exec bash"]
 
 ## Recommended `.dockerignore`
 
+Prevent unnecessary files from being copied into the Docker build context.
+
 ```text
 .git
 .github
 __pycache__
 *.pyc
 *.egg-info
+.ipynb_checkpoints
 build
 dist
 .venv
 venv
 ```
 
-## Build
+## Build the image
 
 ```bash
 docker buildx build \
@@ -265,19 +278,19 @@ docker buildx build \
     -t my-cli-app:latest .
 ```
 
-## Run
+## Run the application
 
 ```bash
 docker run --rm -it my-cli-app:latest
 ```
 
-## Tag
+## Tag an image for Docker Hub
 
 ```bash
 docker tag my-cli-app:latest username/my-cli-app:latest
 ```
 
-## Push
+## Push to Docker Hub
 
 ```bash
 docker push username/my-cli-app:latest
@@ -285,32 +298,40 @@ docker push username/my-cli-app:latest
 
 ---
 
-# 📊 Useful Commands
+# 🔍 Useful Commands for Debugging
 
-See Docker disk usage:
+### View Docker disk usage
 
 ```bash
 docker system df
 ```
 
-See image layers:
+### Inspect image layers
 
 ```bash
 docker history <image>
 ```
 
-See BuildKit builders:
+### List Buildx builders
 
 ```bash
 docker buildx ls
 ```
 
----
-
-# 🚀 Typical Workflow
+### List all Docker contexts
 
 ```bash
-# Edit your code
+docker context ls
+```
+
+---
+
+# 🚀 Typical Development Workflow
+
+A common development cycle looks like this:
+
+```bash
+# Edit your source code
 
 docker buildx build --load -t my-cli-app:latest .
 
@@ -318,6 +339,16 @@ docker run --rm -it my-cli-app:latest
 
 docker push username/my-cli-app:latest
 ```
+
+---
+
+# 💡 Key Concepts
+
+- **Image** → A read-only template used to create containers.
+- **Container** → A running instance of an image.
+- **Dockerfile** → Instructions for building an image.
+- **Volume** → Persistent storage shared between the host and a container.
+- **BuildKit / Buildx** → Docker's modern image builder with better caching, performance, and multi-platform support.
 
 ---
 
