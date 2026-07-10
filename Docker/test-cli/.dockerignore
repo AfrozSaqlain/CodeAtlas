@@ -1,0 +1,14 @@
+.git
+.github
+__pycache__
+*.pyc
+*.pyo
+*.so
+.ipynb_checkpoints
+.venv
+venv
+build
+dist
+*.egg-info
+docs
+tests
