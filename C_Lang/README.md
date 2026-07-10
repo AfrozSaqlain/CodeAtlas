@@ -31,4 +31,4 @@ Run the executable with:
 ```bash
 ./xyz
 ```
-
+Note: You can add a `.o` or `.out` extension to the bianries compiled and it will make no difference but it's a good practise.
