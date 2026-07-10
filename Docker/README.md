@@ -4,21 +4,94 @@
 ![Linux](https://img.shields.io/badge/Platform-Linux-black?logo=linux)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-A concise yet practical guide to Docker for everyday development. This covers the most common workflows: managing Docker, building images, running containers, cleaning up resources, and packaging Python applications.
+A concise yet practical guide to Docker for everyday development. This document covers installing Docker, setting up Buildx, building images, running containers, cleaning up resources, and packaging Python CLI applications.
+
+---
+
+# 🚀 Installing Docker on Arch Linux
+
+Docker is available directly from the official Arch repositories.
+
+## Install Docker
+
+```bash
+sudo pacman -S docker
+```
+
+## Install Buildx (Recommended)
+
+Docker recommends using **Buildx (BuildKit)** instead of the legacy builder.
+
+```bash
+sudo pacman -S docker-buildx
+```
+
+## Enable and start Docker
+
+```bash
+sudo systemctl enable --now docker
+```
+
+## Allow Docker to run without `sudo` (Optional)
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Log out and log back in for the changes to take effect.
+
+Verify the installation:
+
+```bash
+docker version
+docker buildx version
+```
+
+---
+
+# ⚡ One-Time Buildx Setup
+
+Buildx is Docker's modern image builder. It provides:
+
+- Faster builds
+- Better layer caching
+- Parallel build execution
+- Multi-platform builds
+- Replaces the legacy `docker build`
+
+Create a Buildx builder and make it the default:
+
+```bash
+docker buildx create --use
+```
+
+Initialize (bootstrap) the builder:
+
+```bash
+docker buildx inspect --bootstrap
+```
+
+Verify that everything is working:
+
+```bash
+docker buildx ls
+```
+
+> **Note:** These commands are required only once. After the builder is created, all future builds automatically use it.
 
 ---
 
 # 🚀 Managing the Docker Service
 
-Docker runs as a background service (daemon). These commands control the service itself.
+Docker runs as a background service (daemon).
 
-### Enable Docker at system startup
+### Enable Docker at boot
 
 ```bash
 sudo systemctl enable docker
 ```
 
-### Disable Docker from starting automatically
+### Disable Docker at boot
 
 ```bash
 sudo systemctl disable docker
@@ -46,7 +119,7 @@ systemctl status docker
 
 # 📦 Working with Containers
 
-A **container** is a running (or previously run) instance of an image.
+A **container** is a running (or previously run) instance of a Docker image.
 
 ### List running containers
 
@@ -54,7 +127,7 @@ A **container** is a running (or previously run) instance of an image.
 docker ps
 ```
 
-### List all containers (including stopped ones)
+### List all containers
 
 ```bash
 docker ps -a
@@ -66,7 +139,7 @@ docker ps -a
 docker run -it ubuntu bash
 ```
 
-### Run a container and automatically remove it after exit
+### Run and automatically remove after exit
 
 ```bash
 docker run --rm hello-world
@@ -78,13 +151,13 @@ docker run --rm hello-world
 docker start -ai <container>
 ```
 
-### View container logs
+### View logs
 
 ```bash
 docker logs <container>
 ```
 
-### Inspect container details
+### Inspect container
 
 ```bash
 docker inspect <container>
@@ -98,7 +171,7 @@ docker rm <container>
 
 ---
 
-# 🖼️ Working with Images
+# 🖼️ Working with Docker Images
 
 An **image** is a blueprint used to create containers.
 
@@ -120,7 +193,7 @@ docker pull ubuntu
 docker rmi <image>
 ```
 
-### View image layers
+### Inspect image layers
 
 Useful for understanding image size and debugging Dockerfiles.
 
@@ -132,7 +205,7 @@ docker history <image>
 
 # 💾 Persisting Data with Volumes
 
-Containers are temporary. If you want your files to remain after the container is deleted, mount a directory from your host machine.
+Containers are temporary. To persist your data, mount a directory from your host machine.
 
 ```bash
 docker run -it \
@@ -140,13 +213,13 @@ docker run -it \
     ubuntu bash
 ```
 
-Anything written to `/workspace` inside the container is stored in `~/mydata` on your computer.
+Everything inside `/workspace` remains stored on your host even after the container is removed.
 
 ---
 
-# ⚡ Building Images with Buildx (Recommended)
+# ⚡ Building Images with Buildx
 
-Docker now recommends **Buildx (BuildKit)** instead of the legacy `docker build` command.
+Build Docker images using the modern BuildKit backend.
 
 ### Build an image
 
@@ -156,9 +229,9 @@ docker buildx build \
     -t my-image:latest .
 ```
 
-The `--load` flag imports the built image into your local Docker image store so it behaves just like images built with the legacy builder.
+The `--load` option imports the built image into your local Docker image store.
 
-### Show available builders
+### List Buildx builders
 
 ```bash
 docker buildx ls
@@ -180,15 +253,15 @@ docker buildx prune -a
 
 # 🧹 Cleaning Up Docker Resources
 
-Docker stores images, stopped containers, caches, and volumes. These commands help reclaim disk space.
+Docker stores images, stopped containers, build cache, and volumes. These commands help reclaim disk space.
 
-### Remove all stopped containers
+### Remove stopped containers
 
 ```bash
 docker container prune
 ```
 
-### Remove dangling (unused) images
+### Remove dangling images
 
 ```bash
 docker image prune
@@ -206,7 +279,7 @@ docker image prune -a
 docker system prune
 ```
 
-### Check Docker disk usage
+### View Docker disk usage
 
 ```bash
 docker system df
@@ -216,7 +289,7 @@ docker system df
 
 # 🐍 Dockerizing a Python CLI Application
 
-A common project layout for Python applications.
+A recommended project structure:
 
 ```text
 project/
@@ -255,13 +328,15 @@ CMD ["bash", "-lc", "cd ~ && exec bash"]
 
 ## Recommended `.dockerignore`
 
-Prevent unnecessary files from being copied into the Docker build context.
+Prevent unnecessary files from being copied into the build context.
 
 ```text
 .git
 .github
+.gitignore
 __pycache__
 *.pyc
+*.pyo
 *.egg-info
 .ipynb_checkpoints
 build
@@ -284,7 +359,7 @@ docker buildx build \
 docker run --rm -it my-cli-app:latest
 ```
 
-## Tag an image for Docker Hub
+## Tag the image
 
 ```bash
 docker tag my-cli-app:latest username/my-cli-app:latest
@@ -298,27 +373,27 @@ docker push username/my-cli-app:latest
 
 ---
 
-# 🔍 Useful Commands for Debugging
+# 🔍 Useful Debugging Commands
 
-### View Docker disk usage
+### Docker disk usage
 
 ```bash
 docker system df
 ```
 
-### Inspect image layers
+### Image layer history
 
 ```bash
 docker history <image>
 ```
 
-### List Buildx builders
+### Buildx builders
 
 ```bash
 docker buildx ls
 ```
 
-### List all Docker contexts
+### Docker contexts
 
 ```bash
 docker context ls
@@ -328,7 +403,7 @@ docker context ls
 
 # 🚀 Typical Development Workflow
 
-A common development cycle looks like this:
+A typical development cycle looks like this:
 
 ```bash
 # Edit your source code
@@ -342,14 +417,22 @@ docker push username/my-cli-app:latest
 
 ---
 
-# 💡 Key Concepts
+# 📚 Docker Terminology
 
-- **Image** → A read-only template used to create containers.
-- **Container** → A running instance of an image.
-- **Dockerfile** → Instructions for building an image.
-- **Volume** → Persistent storage shared between the host and a container.
-- **BuildKit / Buildx** → Docker's modern image builder with better caching, performance, and multi-platform support.
+| Term | Meaning |
+|------|---------|
+| **Image** | A read-only template used to create containers. |
+| **Container** | A running instance of an image. |
+| **Dockerfile** | A file containing instructions for building an image. |
+| **Volume** | Persistent storage shared between the host and a container. |
+| **BuildKit / Buildx** | Docker's modern build system providing faster builds, better caching, and multi-platform support. |
 
 ---
 
-Happy Dockering! 🐳
+# 🎉 Happy Dockering!
+
+Docker becomes much easier once you remember the workflow:
+
+> **Write a Dockerfile → Build an image → Run a container → Push the image (optional).**
+
+Enjoy containerizing your applications! 🐳
