@@ -43,4 +43,18 @@ fn main() {
     let result = format!("{} {} {}", s1, s2, s3);
 
     println!("{}", result);
+
+    // You can also use the + operator to combine strings, but it can get messy with many value
+
+    let s1 = String::from("Hello");
+    let s2 = String::from("World!");
+    let s3 = String::from("What a beautiful day!");
+    let result = s1 + " " + &s2 + " " + &s3;
+    
+    println!("{}", result);
+
+    // Note: You can only add a &str to a String with +. That is why &s2 and &s3 (a string slice) is used here
+
+    let name = String::from("Ben");
+    println!("Length of name {} is {}", name, name.len());
 }
