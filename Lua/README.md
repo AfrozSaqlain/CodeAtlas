@@ -1,0 +1,1 @@
+In this course, we'll learn how to use Lua in the lens of game development. We'll dive into the syntax so we can get started creating games, building mods, and even learning how to make our own worlds in Roblox Studio or LÖVE, a popular Lua framework.
