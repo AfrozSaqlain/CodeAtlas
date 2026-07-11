@@ -1,134 +1,82 @@
 # CodeAtlas
 
-CodeAtlas is a personal learning repository with small, focused examples across several programming and developer-tooling topics. The current repository covers Python, Rust, C/C++, Lua, and Docker.
+CodeAtlas is a personal learning repository for programming basics. Instead of being only a collection of files, each language folder is meant to work like a small tutorial with simple examples you can compile or run.
 
-## Repository Structure
+## What You Can Learn Here
 
-```text
-CodeAtlas/
-|-- C_Lang/                 # C and C++ compile/run examples
-|-- Docker/                 # Docker notes and a packaged Python CLI demo
-|   `-- test-cli/
-|-- Lua/                    # Lua syntax and game-development notes
-|   `-- Game/
-|-- Python/                 # Intermediate Python concepts
-|   |-- Decorators/
-|   |-- Dunder/
-|   `-- OOP/
-`-- Rust/                   # Cargo projects for Rust basics and data structures
-    |-- Basics/
-    |-- Data_Structures/
-    `-- projects/
-```
+## C
 
-## Contents
+C is a compiled language used for learning low-level programming concepts such as functions, memory, variables, and program structure.
 
-### Python
-
-The Python section contains examples for intermediate language features:
-
-- `Python/Decorators/`: `@property`, `@staticmethod`, `@classmethod`, `dataclass`, `functools`, and timing decorators.
-- `Python/Dunder/`: examples for Python special methods such as `__str__`, `__repr__`, and operator overloading.
-- `Python/OOP/`: notebook-based notes for classes and object-oriented programming.
-
-Run a script from the repository root with:
+Compile and run:
 
 ```bash
-python Python/Decorators/timer.py
-python Python/Dunder/add_dunder.py
+gcc -o hello hello.c
+./hello
 ```
 
-### Rust
+## C++
 
-The Rust section contains multiple independent Cargo projects:
+C++ extends C with stronger abstractions, object-oriented programming support, and a large standard library. It is commonly used for systems software, games, desktop applications, and performance-sensitive programs.
 
-- `Rust/Basics/`: basic syntax, variables, ownership, borrowing, loops, functions, matching, strings, and related topics.
-- `Rust/Data_Structures/`: arrays, vectors, and data-structure practice.
-- `Rust/projects/`: a separate Rust project sandbox.
-
-Run a main project:
+Compile and run:
 
 ```bash
-cd Rust/Basics
+g++ -o app app.cpp
+./app
+```
+
+## Lua
+
+Lua is a lightweight scripting language often used in games, plugins, and embedded systems. It is simple to start with because variables do not need explicit type declarations.
+
+Run:
+
+```bash
+lua intro.lua
+```
+
+## Rust
+
+Rust is a compiled language focused on speed and memory safety. Its ownership and borrowing system helps prevent many common bugs at compile time.
+
+Run with Cargo:
+
+```bash
 cargo run
 ```
 
-Run a specific Rust exercise from `src/bin/`:
+## Python
+
+Python is a high-level interpreted language known for readability and fast development. This repository uses it for intermediate concepts such as decorators, dunder methods, classes, and packaged command-line tools.
+
+Run:
 
 ```bash
-cd Rust/Basics
-cargo run --bin variables
+python script.py
 ```
 
-### C and C++
+## Docker
 
-`C_Lang/` contains simple C and C++ source files:
+Docker is not a programming language, but it is an important developer tool. It packages an application and its dependencies into a container so it can run consistently across machines.
 
-- `hello.c`
-- `math_op.cpp`
-
-Compile and run them with:
+Basic workflow:
 
 ```bash
-gcc -o hello C_Lang/hello.c
-./hello
-
-g++ -o math_op C_Lang/math_op.cpp
-./math_op
+docker buildx build -t my-app .
+docker run --rm my-app
 ```
 
-### Lua
+## Repository Layout
 
-`Lua/` contains introductory Lua examples and a small game-oriented folder:
-
-- `intro.lua`
-- `Game/game.lua`
-
-Run Lua scripts with:
-
-```bash
-lua Lua/intro.lua
-lua Lua/Game/game.lua
+```text
+CodeAtlas/
+|-- C/
+|-- CPP/
+|-- Docker/
+|-- Lua/
+|-- Python/
+`-- Rust/
 ```
 
-### Docker
-
-`Docker/README.md` is a Docker quick reference covering installation, Buildx, images, containers, volumes, and common commands.
-
-`Docker/test-cli/` packages a small Python CLI named `plot-maths`. The CLI plots a simple quadratic curve and writes `Plot.jpg`.
-
-Build and run the image:
-
-```bash
-cd Docker/test-cli
-docker buildx build -t plot-maths .
-docker run --rm -it -v "$PWD:/workspace" plot-maths
-```
-
-Inside the container, run:
-
-```bash
-cd /workspace
-plot-maths
-```
-
-## Requirements
-
-Install the tools needed for the folders you want to use:
-
-- Python 3.8+ for the Python scripts and the Docker CLI package.
-- Rust toolchain with Cargo for `Rust/`.
-- `gcc` and `g++` for `C_Lang/`.
-- Lua for `Lua/`.
-- Docker with Buildx for `Docker/`.
-
-## Getting Started
-
-Clone the repository and move into it:
-
-```bash
-git clone https://github.com/AfrozSaqlain/CodeAtlas.git
-cd CodeAtlas
-```
-
-Then choose a topic folder and follow its local README or the commands above.
+Open a folder's README for a more focused beginner tutorial.
