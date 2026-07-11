@@ -1,13 +1,16 @@
 use pyo3::prelude::*;
 
-/// A Python module implemented in Rust.
 #[pymodule]
-mod my_rust_module {
-    use pyo3::prelude::*;
-
-    /// Formats the sum of two numbers as string.
+fn my_rust_module(m: &Bound<'_, PyModule>) -> PyResult<()> {
     #[pyfunction]
-    fn sum_as_string(a: usize, b: usize) -> PyResult<String> {
-        Ok((a + b).to_string())
+    fn fib(n: usize) -> u64 {
+        let (mut a, mut b): (u64, u64) = (0, 1);
+        for _ in 0..n {
+            (a, b) = (b, a + b);
+        }
+        a
     }
+
+    m.add_function(wrap_pyfunction!(fib, m)?)?;
+    Ok(())
 }
