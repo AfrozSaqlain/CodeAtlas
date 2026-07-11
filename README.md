@@ -4,7 +4,7 @@ CodeAtlas is a personal learning repository for programming basics. Instead of b
 
 ## What You Can Learn Here
 
-## C
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" width="24"/>
 
 C is a compiled language used for learning low-level programming concepts such as functions, memory, variables, and program structure.
 
@@ -15,7 +15,7 @@ gcc -o hello hello.c
 ./hello
 ```
 
-## C++
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" width="24"/>
 
 C++ extends C with stronger abstractions, object-oriented programming support, and a large standard library. It is commonly used for systems software, games, desktop applications, and performance-sensitive programs.
 
@@ -26,7 +26,7 @@ g++ -o app app.cpp
 ./app
 ```
 
-## Lua
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-original.svg" width="24"/> Lua
 
 Lua is a lightweight scripting language often used in games, plugins, and embedded systems. It is simple to start with because variables do not need explicit type declarations.
 
@@ -36,7 +36,7 @@ Run:
 lua intro.lua
 ```
 
-## Rust
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg" width="24"/> Rust
 
 Rust is a compiled language focused on speed and memory safety. Its ownership and borrowing system helps prevent many common bugs at compile time.
 
@@ -46,7 +46,7 @@ Run with Cargo:
 cargo run
 ```
 
-## Python
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="24"/> Python
 
 Python is a high-level interpreted language known for readability and fast development. This repository uses it for intermediate concepts such as decorators, dunder methods, classes, and packaged command-line tools.
 
@@ -56,7 +56,7 @@ Run:
 python script.py
 ```
 
-## Docker
+## <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="24"/> Docker
 
 Docker is not a programming language, but it is an important developer tool. It packages an application and its dependencies into a container so it can run consistently across machines.
 
