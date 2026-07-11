@@ -15,15 +15,27 @@ int fibonacci(int a) {
 }
 
 int main() {
-  int a, b;
-
-  cout << "Enter first number ";
-  cin >> a;
-  cout << "Enter second number ";
-  cin >> b;
+  int a, b, operation;
   
-  cout << "The sum of two numbers entered is: " << add(a, b) << endl;
+  cout << "What operation you want to perform {1: Addition, 2: Fibonacci}: ";
+  cin >> operation;
 
-  cout << "Fibonacci of the first number is: " << fibonacci(a) << endl;
+  if (operation == 1) {
+    cout << "Enter first number ";
+    cin >> a;
+
+    cout << "Enter second number ";
+    cin >> b;
+  
+    cout << "The sum of two numbers entered is: " << add(a, b) << endl;
+  } else if (operation == 2) {
+    
+    cout << "Enter the number ";
+    cin >> a;
+
+    cout << "Fibonacci of the first number is: " << fibonacci(a) << endl;
+  } else {
+    cout << "Invalid operation Id";
+  }
   return 0;
 }
