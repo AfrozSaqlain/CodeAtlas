@@ -12,6 +12,6 @@ fn main() {
             return result;
         }
     }
-    let num: i32 = 3;
+    let num: i32 = 20;
     println!("Fibonacci squence till {} is {:?}", num, fibonacci(num));
 }
