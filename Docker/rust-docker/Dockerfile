@@ -1,11 +1,13 @@
-FROM rust:latest
+FROM debian:bookworm-slim
 
 ARG USERNAME
 ARG UID
 ARG GID
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends vim && \
+    apt-get install -y --no-install-recommends \
+        vim \
+        ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd -g ${GID} ${USERNAME} && \
