@@ -1,23 +1,18 @@
-FROM ubuntu:24.04
+FROM rust:latest
 
 ARG USERNAME
 ARG UID
 ARG GID
 
+RUN groupadd -g ${GID} ${USERNAME} \
+ && useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USERNAME}
+
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        vim \
-        ca-certificates && \
+    apt-get install -y --no-install-recommends vim && \
     rm -rf /var/lib/apt/lists/*
 
-RUN if id -u ${UID} >/dev/null 2>&1; then \
-        usermod -l ${USERNAME} -d /home/${USERNAME} -m "$(getent passwd ${UID} | cut -d: -f1)"; \
-    else \
-        if ! getent group ${GID} >/dev/null; then \
-            groupadd -g ${GID} ${USERNAME}; \
-        fi; \
-        useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USERNAME}; \
-    fi
+RUN groupadd -g ${GID} ${USERNAME} && \
+    useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USERNAME}
 
 COPY papr /usr/local/bin/
 
